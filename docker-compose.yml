@@ -1,0 +1,13 @@
+version: '3'
+services:
+
+ net-harvest:
+  build:
+   context: .
+   dockerfile: Dockerfile
+   args:
+    commitID: "local"
+  image: net-harvest
+  ports:
+   - "8080:8181"
+
