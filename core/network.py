@@ -30,7 +30,7 @@ def tcp(address, port):
 def ssh_probe(address, port):
     # Probe the endpoint for the SSH version
     cmd = '/usr/bin/ssh-keyscan -p {} {}'.format(port, address);
-    proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE)
+    proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT);
     out,err = proc.communicate();
 
     return str(out);
