@@ -1,0 +1,13 @@
+# Editor's cache, config, etc
+*~
+*.swp
+.idea/
+
+# python cache
+*.pyc
+*.pyo
+
+# OS cache
+.DS_Store
+._.DS_Store
+.nfs.*
