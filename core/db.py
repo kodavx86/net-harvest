@@ -126,6 +126,9 @@ def get_job_data(job_id):
                 }
             ];
 
+    # Close the database connection
+    conn.close();
+
     return json.dumps(j_data);
 
 def delete_job(job_id):
@@ -144,4 +147,26 @@ def delete_job(job_id):
     conn.close();
 
     return;
+
+def get_all_jobs_summary():
+    # Connect to the database
+    conn = sqlite3.connect(DATABASE);
+    conn.row_factory = sqlite3.Row;
+    cursor = conn.cursor();
+
+    # Get the job data
+    cursor.execute("SELECT id, start_time, end_time, status from Jobs");
+    j_data = [];
+    for row in cursor:
+        r_data = {};
+        r_data['id'] = row['id'];
+        r_data['start_time'] = row['start_time'];
+        r_data['end_time'] = row['end_time'];
+        r_data['status'] = row['status'];
+        j_data.append(r_data);
+
+    # Close the database connection
+    conn.close();
+
+    return j_data;
 

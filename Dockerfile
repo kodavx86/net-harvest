@@ -33,7 +33,7 @@ RUN apt-get install sqlite3 -y
 
 # Install the Python packages
 RUN apt-get install python3-pip -y
-RUN pip3 install flask requests uWSGI
+RUN pip3 install flask requests uWSGI python-dateutil
 
 # Install the Nmap network utility
 RUN apt-get install nmap -y

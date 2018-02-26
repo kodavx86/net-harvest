@@ -1,0 +1,30 @@
+{% extends "p_layout.html" %}
+{% block title %}{{r_params['title']}}{% endblock %}
+{% block content %}
+<style>
+  thead {
+   font-size: x-large;
+  }
+  tr.trsize {
+   font-size: large;
+  }
+</style>
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr><th>ID</th><th>Start Time</th><th>End Time</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for job in r_params['j_data'] %}
+      <tr class="trsize">
+	<td>{{job['id']}}</td>
+	<td>{{job['start_time']}}</td>
+	<td>{{job['end_time']}}</td>
+	<td>{{job['status']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+

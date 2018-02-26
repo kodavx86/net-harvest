@@ -63,6 +63,7 @@ def tcp_scan(data, targets):
                 with open(of, 'r') as f:
                     output = f.read();
                 r_tree = ET.ElementTree(ET.fromstring(output));
+                service = '';
                 for elem in r_tree.iter(tag='service'):
                     service = elem.get('name','unknown');
 

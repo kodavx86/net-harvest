@@ -3,9 +3,10 @@
 # Author: kodavx86
 # Created: 02.19.2018
 
-from flask import Flask, Response, request
-import json, multiprocessing
+from flask import Flask, Response, request, render_template
+import json, multiprocessing, datetime
 import db, worker
+from dateutil import tz
 
 app = Flask(__name__)
 
@@ -76,6 +77,35 @@ def purge_job(jobid):
  db.delete_job(jobid);
  return Response(json.dumps({"message" : "Job deleted"}), status=200,
                  mimetype='application/json');
+
+@app.route('/', methods=['GET'])
+def homepage():
+ # Get all job summary data from db
+ j_data = db.get_all_jobs_summary();
+
+ # Convert job times to local times
+ ftz = tz.gettz('UTC');
+ ttz = tz.tzlocal();
+ for j in j_data:
+  start_time = j['start_time'];
+  utc_sdate = datetime.datetime.fromtimestamp(start_time);
+  utc_sdate = utc_sdate.replace(tzinfo=ftz);
+  local_sdate = utc_sdate.astimezone(ttz);
+  j['start_time'] = str(local_sdate);
+
+  if 0 == j['end_time']:
+   j['end_time'] = '--';
+  else:
+   end_time = j['end_time'];
+   utc_edate = datetime.datetime.fromtimestamp(end_time);
+   utc_edate = utc_edate.replace(tzinfo=ftz);
+   local_edate = utc_edate.astimezone(ttz);
+   j['end_time'] = str(local_edate);
+
+ # Prepare the template parameters
+ r_params = {'title' : 'Summary', 'j_data' : j_data};
+
+ return render_template('summary.html', r_params=r_params);
 
 if __name__ == '__main__':
  # This is executed when net-harvest is run locally
